@@ -68,13 +68,15 @@ namespace usu
             return *this;
         }
 
-        //T* operator->()
-        //{
-        //}
+        T* operator->()
+        {
+            return ptr;
+        }
 
-        //T& operator*()
-        //{
-        //}
+        T& operator*()
+        {
+            return *ptr;
+        }
 
         T* get()
         {
@@ -94,33 +96,46 @@ namespace usu
         std::uint64_t* getCount()
         {
             return count;
-		}
+        }
 
       private:
         std::uint64_t* count;
         T* ptr;
     };
 
-    //template <typename T>
-    //class shared_ptr<T[]>
-    //{
-    //  public:
-    //    shared_ptr<T>(T[] * ptr, std::uint64_t numOfElements)
-    //    {
-    //    }
+    template <typename T>
+    class shared_ptr<T[]>
+    {
+      public:
+        shared_ptr<T[]>()
+        {
+        }
 
-    //    T operator[](std::uint64_t location)
-    //    {
-    //    }
+        shared_ptr<T[]>(T* ptr, std::uint64_t num)
+        {
+            this->ptr = ptr;
+            sizeOfArray = new std::uint64_t(num);
+		}
 
-    //    std::uint64_t size()
-    //    {
-    //        return size;
-    //    }
+        ~shared_ptr<T[]>()
+        {
+            delete this;
+        }
 
-    //  private:
-    //    std::uint64_t size;
-    //};
+        T operator[](std::uint64_t location)
+        {
+            return ptr[location];
+        }
+
+        std::uint64_t size()
+        {
+            return *sizeOfArray;
+        }
+
+      private:
+        std::uint64_t* sizeOfArray;
+        T* ptr;
+    };
 
     template <typename T, typename... Args>
     shared_ptr<T> make_shared(Args&&... args)
@@ -128,9 +143,9 @@ namespace usu
         return shared_ptr<T>(new T(std::forward<Args>(args)...));
     }
 
-    /*  template <typename T, unsigned int N>
+    template <typename T, unsigned int N>
     shared_ptr<T[]> make_shared_array()
     {
         return shared_ptr<T[]>(new T[N], N);
-    }*/
+    }
 } // namespace usu
