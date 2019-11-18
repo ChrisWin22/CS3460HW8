@@ -1,4 +1,5 @@
 #include <memory>
+#include <exception> 
 
 namespace usu
 {
@@ -119,12 +120,12 @@ namespace usu
 
         ~shared_ptr<T[]>()
         {
-            delete this;
+            //delete this;
         }
 
-        T operator[](std::uint64_t location)
+        T& operator[](std::uint64_t location)
         {
-            return ptr[location];
+			return ptr[location];
         }
 
         std::uint64_t size()
@@ -149,3 +150,7 @@ namespace usu
         return shared_ptr<T[]>(new T[N], N);
     }
 } // namespace usu
+//initialize outside of class
+//Do I need to initialize the array?
+//std::initializer_list???
+//delete the object not the ptr??
